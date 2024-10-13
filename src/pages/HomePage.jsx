@@ -5,16 +5,18 @@ import Filters from "../components/Filters";
 function HomePage() {
   const [search, setSearch] = useState("");
   const [regions, setRegion] = useState("");
+  const [sortBy, setSortBy] = useState("");
+  console.log(sortBy);
 
   return (
     <>
       <Filters
         search={search}
         setSearch={setSearch}
-        regions={regions}
         setRegion={setRegion}
+        setSortBy={setSortBy}
       />
-      <CountryList search={search} regions={regions} />
+      <CountryList search={search} regions={regions} sortBy={sortBy} />
     </>
   );
 }

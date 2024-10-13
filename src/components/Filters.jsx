@@ -1,7 +1,8 @@
 import SearchInput from "../ui/SearchInput";
 import SelectOptions from "../ui/SelectOptions";
+import SortBy from "./SortBy";
 
-function Filters({ search, setSearch, setRegion }) {
+function Filters({ search, setSearch, setRegion, setSortBy }) {
   return (
     <form
       onSubmit={(e) => e.preventDefault()}
@@ -9,7 +10,10 @@ function Filters({ search, setSearch, setRegion }) {
     >
       <SearchInput search={search} setSearch={setSearch} />
 
-      <SelectOptions setRegion={setRegion} />
+      <div className="flex flex-col gap-2 md:flex-row md:gap-4 lg:flex-row-reverse">
+        <SelectOptions setRegion={setRegion} />
+        <SortBy setSortBy={setSortBy} />
+      </div>
     </form>
   );
 }

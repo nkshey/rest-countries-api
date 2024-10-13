@@ -5,7 +5,7 @@ import CountryCard from "./CountryCard";
 const INITIAL_COUNTRIES_TO_SHOW = 20;
 const COUNTRIES_TO_LOAD_ON_CLICK = 20;
 
-function CountryList({ search, regions }) {
+function CountryList({ search, regions, sortBy }) {
   const [countriesToShow, setCountriesToShow] = useState(
     INITIAL_COUNTRIES_TO_SHOW,
   );
@@ -23,7 +23,7 @@ function CountryList({ search, regions }) {
   });
 
   const filteredCountries = useMemo(() => {
-    return countries
+    const filtered = countries
       ?.filter((country) =>
         country.name.common.toLowerCase().includes(search.toLowerCase()),
       )
@@ -32,7 +32,27 @@ function CountryList({ search, regions }) {
           ? country
           : regions.includes(country.region.toLowerCase());
       });
-  }, [countries, search, regions]);
+
+    switch (sortBy) {
+      case "nameAsc":
+        filtered.sort((a, b) => a.name.common.localeCompare(b.name.common));
+        break;
+      case "nameDesc":
+        filtered.sort((a, b) => b.name.common.localeCompare(a.name.common));
+        break;
+      case "populationAsc":
+        filtered.sort((a, b) => a.population - b.population);
+        break;
+      case "populationDesc":
+        filtered.sort((a, b) => b.population - a.population);
+        break;
+      default:
+        filtered;
+        break;
+    }
+
+    return filtered;
+  }, [countries, search, regions, sortBy]);
 
   if (isLoading)
     return (
