@@ -34,6 +34,7 @@ export default {
       screens: {
         "lg-plus": "1208px",
         "xl-plus": "1310px",
+        "2xl-plus": "2000px",
       },
     },
   },
