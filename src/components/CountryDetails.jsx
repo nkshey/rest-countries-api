@@ -10,7 +10,7 @@ function CountryDetails({ currentCountryData, nativeNames }) {
 
       <li>
         <strong className="font-semi-bold">Population: </strong>
-        {currentCountryData.population}
+        {currentCountryData.population.toLocaleString()}
       </li>
 
       <li>
