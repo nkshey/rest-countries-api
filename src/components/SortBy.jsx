@@ -43,6 +43,36 @@ function SortBy({ setSortBy }) {
     };
   }, []);
 
+  useEffect(() => {
+    const savedOption = localStorage.getItem("selectedSortBy");
+    if (savedOption) {
+      const { value, label } = JSON.parse(savedOption);
+      setSortBy(value);
+      setSelectedOption(label);
+    }
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "hidden") {
+        localStorage.removeItem("selectedSortBy");
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [setSortBy]);
+
+  function handleSort(value, text) {
+    setSortBy(value);
+    setSelectedOption(text);
+    localStorage.setItem(
+      "selectedSortBy",
+      JSON.stringify({ value, label: text }),
+    );
+  }
+
   return (
     <>
       {isOpen && (
@@ -65,10 +95,7 @@ function SortBy({ setSortBy }) {
             {options.map((option) => (
               <li
                 key={option.value}
-                onClick={() => {
-                  setSortBy(option.value);
-                  setSelectedOption(option.label);
-                }}
+                onClick={() => handleSort(option.value, option.label)}
                 className="cursor-pointer rounded-[0.25rem] px-4 py-2 hover:bg-[#f5f5f5] dark:hover:bg-dark-blue lg:text-[0.875rem]"
               >
                 {option.label}

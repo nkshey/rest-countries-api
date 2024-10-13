@@ -38,10 +38,35 @@ function SelectOptions({ setRegion }) {
   const [selectedOption, setSelectedOption] = useState("Filter by Region");
   const dropdownRef = useRef(null);
 
+  useEffect(() => {
+    const savedOption = localStorage.getItem("selectedRegion");
+    if (savedOption) {
+      const { value, label } = JSON.parse(savedOption);
+      setRegion(value);
+      setSelectedOption(label);
+    }
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "hidden") {
+        localStorage.removeItem("selectedRegion");
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [setRegion]);
+
   const handleSelect = (value, text) => {
     setRegion(value);
     setSelectedOption(text);
     setIsOpen(false);
+    localStorage.setItem(
+      "selectedRegion",
+      JSON.stringify({ value, label: text }),
+    );
   };
 
   useEffect(() => {
